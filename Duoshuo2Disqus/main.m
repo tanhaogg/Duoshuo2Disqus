@@ -31,6 +31,12 @@ NSString *FilterString(NSString *string)
     return cleanedString;
 }
 
+// 添加CDATA
+NSString *CDATAString(NSString *string)
+{
+    return [NSString stringWithFormat:@"<![CDATA[%@]]>",string];
+}
+
 int main(int argc, const char * argv[])
 {
     @autoreleasepool
@@ -113,7 +119,7 @@ int main(int argc, const char * argv[])
                 [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_author_url" stringValue:FilterString(SAFESTR(comment[@"author_url"]))]];
                 [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_author_IP" stringValue:FilterString(SAFESTR(comment[@"ip"]))]];
                 [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_date_gmt" stringValue:gmtDate]];
-                [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_content" stringValue:FilterString(SAFESTR(comment[@"message"]))]];
+                [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_content" stringValue:CDATAString(FilterString(SAFESTR(comment[@"message"])))]];
                 [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_approved" stringValue:@"1"]];
                 [commentNode addChild:[NSXMLElement elementWithName:@"wp:comment_parent" stringValue:SAFESTR(comment[@"parent_id"])]];
             }
